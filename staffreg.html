@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Staff Registration</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #004d40, #00695c);
+            background-image: url(../static/img/staff2.jpg);
+            background-position: center;
+            background-size: cover;
+        }
+
+        .register-box {
+            width: 420px;
+            background: #ffffff;
+            padding: 30px;
+            margin: 80px auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            text-align: center;
+            color: #004d40;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 12px;
+        }
+
+        .required{
+            color:red;
+            margin-left:4px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: #004d40;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #00695c;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #004d40;
+            font-weight: bold;
+        }
+
+        .navbar{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 25px;
+            background: transparent;
+            z-index: 1000;
+        }
+
+        .navbar a{
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            background: rgba(0,0,0,0.4);
+            padding: 8px 14px;
+            border-radius: 6px;
+        }
+
+        .navbar a:hover{
+            background: rgba(0,0,0,0.6);
+        }
+    </style>
+
+    <script>
+        function staffRegister(event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value;
+
+            if(!email.includes("@")){
+                alert("Please enter a valid Email ID with '@' symbol");
+                return;
+            }
+
+            alert("Staff Registration Successful!");
+            window.location.href = "{{ url_for('staff_login') }}";
+        }
+    </script>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="{{ url_for('home') }}">← Back to Home</a>
+</div>
+
+<div class="register-box">
+    <h2>Staff Registration</h2>
+
+   <form method="POST" action="{{ url_for('staff_register') }}">
+
+    <label>Staff Name<span class="required">*</span></label>
+    <input type="text" name="staff_name" required>
+
+    <label>Email ID<span class="required">*</span></label>
+    <input type="email" name="email" required>
+
+    <label>Staff ID<span class="required">*</span></label>
+    <input type="text" name="staff_id" required pattern="[0-9]{6}" maxlength="6">
+
+    <label>Department<span class="required">*</span></label>
+    <select name="department" required>
+        <option value="">Select Department</option>
+      <option>PHYSICS</option>
+        <option>CHEMISTRY</option>
+        <option>BOTANY</option>
+        <option>ZOOLOGY</option>
+        <option>BCA</option>
+        <option>CS</option>
+        <option>TAMIL</option>
+        <option>ENGLISH</option>
+        <option>MATHS</option>
+        <option>HISTORY</option>
+        <option>ECONOMICS</option>
+        <option>GEOLOGY</option>
+    </select>
+
+    <label>Password<span class="required">*</span></label>
+    <input type="password" name="password" required>
+
+    <button type="submit">REGISTER</button>
+</form>
+
+
+    <p>Already Registered? <a href="{{ url_for('staff_login') }}">Staff Login</a></p>
+</div>
+
+</body>
+</html>

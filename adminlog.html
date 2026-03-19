@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Login | Assignment Portal</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    margin:0;
+    background:linear-gradient(to right,#000428,#004e92);
+    background-image: url(../static/img/boot5.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+/* NAVBAR */
+.navbar{
+    padding:15px;
+}
+.navbar a{
+    color:white;
+    text-decoration:none;
+    font-size:16px;
+    font-weight:bold;
+}
+
+/* ADMIN BOX */
+.admin-box{
+    width:380px;
+    background:white;
+    padding:30px;
+    margin:120px auto;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.4);
+}
+
+.admin-box h2{
+    text-align:center;
+    color:green;
+    margin-bottom:20px;
+}
+
+/* LABEL + STAR (Google Forms style) */
+.label-row{
+    display:flex;
+    align-items:center;
+    font-weight:bold;
+    margin-top:15px;
+}
+
+.required{
+    color:red;
+    margin-left:4px;
+}
+
+/* INPUT */
+.admin-box input{
+    width:100%;
+    padding:10px;
+    margin-top:6px;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+
+.admin-box input:focus{
+    outline:none;
+    border-color:#004e92;
+}
+
+/* BUTTON */
+.admin-box button{
+    width:100%;
+    padding:12px;
+    margin-top:25px;
+    background:#004e92;
+    color:white;
+    border:none;
+    font-size:16px;
+    border-radius:6px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.admin-box button:hover{
+    background:#003366;
+}
+
+/* ERROR MESSAGE */
+.error-msg{
+    color:red;
+    text-align:center;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <a href="{{ url_for('home') }}">← Back to Home</a>
+</div>
+
+<div class="admin-box">
+    <h2>Admin Login</h2>
+
+    <!-- ✅ Flask POST form -->
+    <form method="POST" action="{{ url_for('admin_login') }}">
+
+        <!-- USERNAME -->
+        <div class="label-row">
+            <label>Admin Username</label>
+            <span class="required">*</span>
+        </div>
+        <input type="text" name="username" placeholder="Enter Admin Username" required>
+
+        <!-- PASSWORD -->
+        <div class="label-row">
+            <label>Admin Password</label>
+            <span class="required">*</span>
+        </div>
+        <input type="password" name="password" placeholder="Enter Admin Password" required>
+
+        <!-- LOGIN BUTTON -->
+        <button type="submit">LOGIN</button>
+
+        <!-- SHOW ERROR IF LOGIN FAILS -->
+        {% if error %}
+        <div class="error-msg">{{ error }}</div>
+        {% endif %}
+
+    </form>
+</div>
+
+</body>
+</html>

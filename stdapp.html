@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Dashboard | Assignment Portal</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,rgb(210, 193, 226));
+    background-image: url(../static/img/root.webp);
+    background-position:center;
+    background-size: cover;
+}
+
+/* ===== NAVBAR ===== */
+.navbar{
+    color:white;
+    font-size: x-large;
+    padding:15px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.nav-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.back-btn{
+    background:blueviolet;
+    color:white;
+    border:none;
+    padding:6px 14px;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+.avatar{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:red;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    cursor:pointer;
+
+    position:absolute;   /* 🔥 IMPORTANT */
+    right:150px;          /* right side gap */
+    top:40px;            /* top gap */
+}
+
+/* ===== COMMON ===== */
+.container{
+    max-width:1200px;
+    margin:30px auto;
+    padding:0 15px;
+}
+
+.hidden{ display:none; }
+
+.card{
+    padding:22px;
+    border-radius:14px;
+    box-shadow:0 12px 25px white;
+    margin-bottom:25px;
+}
+
+/* ===== MODULES ===== */
+.modules{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:50px;
+}
+
+.module{
+    background:cyan;
+    color:black;
+    font-weight:bold;
+    padding:20px;
+    border-radius:100px;
+    text-align:left;
+    width: 100%;
+    display:block;
+    
+}
+
+/* ===== STAFF ASSIGNMENT CARD ===== */
+.assignment-card{
+    background:linear-gradient(135deg,#4f46e5,#9333ea);
+    color:white;
+    padding:20px;
+    border-radius:16px;
+    margin-top:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+.assignment-card h3{
+    color:#ffffff;
+    font-size:26px;
+    margin-bottom:8px;
+}
+
+.assignment-card p{
+    margin:4px 0;
+    font-size:16px;
+}
+
+.assignment-card .submit-btn{
+    margin-top:12px;
+    background:#22c55e;
+    color:white;
+    border:none;
+    padding:8px 20px;
+    border-radius:25px;
+    font-size:15px;
+    cursor:pointer;
+}
+
+/* ===== FORM ===== */
+label{
+    font-size:20px;
+    font-weight:bold;
+    color:#eef2ff;
+}
+
+input{
+    width:100%;
+    padding:11px;
+    margin:6px 0 14px;
+    border:1px solid #c7d2fe;
+    border-radius:10px;
+}
+
+.btn{
+    padding:9px 18px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+.primary{ background:#4f46e5; color:white; }
+.danger{ background:#ef4444; color:white; }
+
+#submitPage input{
+    background:#ffffff !important;
+    color:#111827 !important;
+    border:2px solid #a855f7;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="nav-left">
+        <button class="back-btn" onclick="goHome()">⬅ Back</button>
+        <h2>Student Dashboard</h2>
+    </div>
+   
+</div>
+<div class="avatar" onclick="openProfile()">
+    {{ student_name[0] | upper }}
+</div>
+<!-- PROFILE PAGE -->
+<div id="profilePage" class="container hidden">
+    <div class="card" style="max-width:560px;margin:auto;">
+        <h3>My Profile</h3>
+
+        <form method="POST" action="{{ url_for('update_student_profile') }}">
+
+            <label>Full Name</label>
+            <input name="full_name" value="{{ student.full_name }}">
+
+            <label>Register Number</label>
+            <input value="{{ student.reg_no }}" readonly>
+
+            <label>Email</label>
+            <input name="email" value="{{ student.email }}">
+
+            <label>Department</label>
+            <input name="department" value="{{ student.department }}">
+
+            <button class="btn primary" type="submit">Save</button>
+            <button class="btn danger" type="button" onclick="goBack()">⬅ Back</button>
+
+        </form>
+    </div>
+</div>
+<!-- DASHBOARD -->
+<div id="dashboard" class="container">
+
+    <!-- 🔥 ADD THIS WRAPPER -->
+    <div class="modules">
+
+        <div class="module">
+            📘 Total Assignments<br>
+            <b>{{ total_assignments }}</b>
+        </div>
+
+        <div class="module">
+            ✅ Submitted<br>
+            <b>{{ submitted_count }}</b>
+        </div>
+
+        <div class="module">
+            ⏳ Pending<br>
+            <b>{{ pending_count }}</b>
+        </div>
+
+        <div class="module">
+            📅 Next Due<br>
+            <b>{{ next_due }}</b>
+        </div>
+
+    </div>  <!-- 🔥 CLOSE HERE -->
+
+
+    {% for a in assignments %}
+    <div class="assignment-card">
+        <h3>{{ a.title }}</h3>
+        <p>📘 Subject : {{ a.subject }}</p>
+        <p>🏫 Department : {{ a.department }}</p>
+        <p>⏰ Due Date : {{ a.due_date }}</p>
+
+       {% if a.title in submitted_titles %}
+    <button class="submit-btn" style="background:gray;" disabled>
+        ✅ Submitted
+    </button>
+{% else %}
+    <button class="submit-btn" onclick="openSubmit('{{ a.title }}')">
+        Submit Assignment
+    </button>
+{% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+<!-- ================= SUBMIT PAGE ================= -->
+<div id="submitPage" class="container hidden">
+    <div class="card" style="max-width:560px;margin:auto;">
+        <h3>Submit Assignment</h3>
+
+        <!-- 🔥 ONLY REQUIRED CHANGE FOR DB STORE -->
+        <form method="POST"
+              action="{{ url_for('submit_assignment') }}"
+              enctype="multipart/form-data">
+
+            <label>Assignment Title *</label>
+            <input id="assignName" name="assignment_title" readonly>
+
+            <label>Register Number *</label>
+            <input id="regNo" name="reg_no">
+
+            <label>Email *</label>
+            <input id="email" name="email" type="email">
+
+            <label>Department *</label>
+            <input id="dept" name="department">
+
+            <label>Year *</label>
+            <input id="year" name="year">
+
+            <label>Section *</label>
+            <input id="section" name="section">
+
+            <label>Upload PDF *</label>
+            <input id="pdfFile" name="pdf_file" type="file" accept=".pdf">
+
+            <button class="btn primary" type="submit">Submit</button>
+            <button class="btn danger" type="button" onclick="goBack()">⬅ Back</button>
+
+        </form>
+        <!-- 🔥 END CHANGE -->
+    </div>
+</div>
+
+<script>
+let historyStack=["dashboard"];
+
+function hideAll(){
+    dashboard.classList.add("hidden");
+    submitPage.classList.add("hidden");
+    profilePage.classList.add("hidden");
+}
+function navigate(page){
+    hideAll();
+    document.getElementById(page).classList.remove("hidden");
+    historyStack.push(page);
+}
+
+function goBack(){
+    historyStack.pop();
+    let prev=historyStack[historyStack.length-1]||"dashboard";
+    hideAll();
+    document.getElementById(prev).classList.remove("hidden");
+}
+
+function goHome(){
+    window.location.href="{{ url_for('home') }}";
+}
+
+function openSubmit(title){
+    document.getElementById("assignName").value = title;
+    navigate("submitPage");
+}
+function openProfile(){
+    navigate("profilePage");
+}
+</script>
+
+</body>
+</html>

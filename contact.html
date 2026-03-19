@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Contact Us | Assignment Submission Portal</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f4f6f9;
+    background-image: url(../static/img/cont.webp);
+    background-position: center;
+    background-size: cover;
+}
+
+/* NAVBAR */
+.navbar{
+    background:pink;
+    padding:15px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.navbar h2{
+    color:black;
+    margin:0;
+}
+.navbar a{
+    color:black;
+    font-weight: bold;
+    text-decoration:none;
+    margin-left:20px;
+    font-size:16px;
+}
+.navbar a:hover{
+    text-decoration:underline;
+}
+
+/* BACK BAR */
+.backbar{
+    background:blue;
+    padding:10px 30px;
+}
+.backbar a{
+    color:white;
+    text-decoration:none;
+    font-size:15px;
+}
+
+/* CONTACT SECTION */
+.contact-section{
+    max-width:1100px;
+    margin:30px auto;
+    padding:20px;
+    display:flex;
+    gap:30px;
+    flex-wrap:wrap;
+}
+
+/* CONTACT INFO */
+.contact-info{
+    flex:1;
+    min-width:300px;
+    background:linear-gradient(rgb(67, 193, 25));
+    color:black;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.25);
+}
+.contact-info h2{
+    margin-top:0;
+}
+.contact-info p{
+    font-size:16px;
+    line-height:1.8;
+}
+.contact-info ul{
+    margin-top:15px;
+    padding-left:20px;
+}
+.contact-info li{
+    margin-bottom:10px;
+}
+
+/* FEEDBACK FORM */
+.contact-form{
+    flex:1;
+    min-width:300px;
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+.contact-form h2{
+    margin-top:0;
+    color: green;
+    text-align:center;
+}
+.contact-form label{
+    display:block;
+    margin-top:15px;
+    font-weight:bold;
+}
+.contact-form input,
+.contact-form textarea{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:14px;
+}
+.contact-form textarea{
+    resize:none;
+    height:120px;
+}
+.contact-form button{
+    margin-top:20px;
+    padding:12px;
+    width:100%;
+    background:#1a237e;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    cursor:pointer;
+}
+.contact-form button:hover{
+    background:#303f9f;
+}
+
+/* FLASH MESSAGE */
+.flash-message {
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+.flash-message.success {
+    background-color: #4caf50;
+    color: white;
+}
+.flash-message.error {
+    background-color: #f44336;
+    color: white;
+}
+
+/* FOOTER */
+footer{
+    background:#1a237e;
+    color:white;
+    text-align:center;
+    padding:15px;
+    margin-top:40px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2>FEEDBACK FORM</h2>
+    <div>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('register') }}">Register</a>
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+    </div>
+</div>
+
+<!-- BACK -->
+<div class="backbar">
+    <a href="{{ url_for('home') }}">← Back to Home</a>
+</div>
+
+<!-- FLASH MESSAGE -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash-message {{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<!-- CONTACT SECTION -->
+<div class="contact-section">
+
+    <!-- CONTACT INFO -->
+    <div class="contact-info">
+        <h2>Get in Touch</h2>
+        <p>
+            If you have any queries related to assignment submission,
+            login issues, or system usage, feel free to contact us.
+            Our team will respond as soon as possible.
+        </p>
+
+        <ul>
+            <li><strong>Email:</strong> support@assignmentportal.com</li>
+            <li><strong>Phone:</strong> +91 98765 43210</li>
+            <li><strong>Working Hours:</strong> Monday – Friday (9:00 AM – 5:00 PM)</li>
+            <li><strong>Location:</strong> Academic Support Center</li>
+        </ul>
+    </div>
+
+    <!-- FEEDBACK FORM -->
+    <div class="contact-form">
+        <h2>Feedback Form</h2>
+
+        <!-- Added method POST and action -->
+        <form method="POST" action="{{ url_for('contact') }}">
+            <label>Full Name</label>
+            <input type="text" name="full_name" placeholder="Enter your name" required>
+
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="Enter your email" required>
+
+            <label>Subject</label>
+            <input type="text" name="subject" placeholder="Enter subject">
+
+            <label>Message</label>
+            <textarea name="message" placeholder="Type your message here..." required></textarea>
+
+            <button type="submit">Send Feedback</button>
+        </form>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+    © 2025 Online Assignment Submission Portal | All Rights Reserved
+</footer>
+
+</body>
+</html>

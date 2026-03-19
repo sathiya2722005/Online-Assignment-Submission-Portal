@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Staff Dashboard | Assignment Portal</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(to right,green,#764ba2);
+    background-image: url(../static/img/staff1.jpg);
+    background-size: cover;
+    background-position:center;
+}
+
+.navbar{
+    background:#1f2933;
+    color:orange;
+    padding:12px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.heading{
+    font-size:25px;
+    font-weight:bold;
+}
+
+.container{
+    padding:20px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.card{
+    background:lightskyblue;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,.3);
+}
+
+input,button{
+    width:100%;
+    padding:8px;
+    margin-top:6px;
+}
+
+button{
+    background:#4f46e5;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.action-btn{background:#16a34a;}
+.reject-btn{background:#dc2626;}
+.pending-btn{background:#f59e0b;}
+.print-btn{background:#2563eb;}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+}
+
+th{
+    background:green;
+    color:white;
+    padding:10px;
+}
+
+td{
+    padding:8px;
+    text-align:center;
+}
+
+tr:nth-child(even){background:skyblue;}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <a href="{{ url_for('staffacc') }}" style="position:absolute; top:20px; right:20px; text-decoration:none;">
+    <div style="
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:white;
+    color:#4f46e5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    font-weight:bold;
+    cursor:pointer;">
+        {{ session['staff_name'][0] }}
+    </div>
+</a>
+
+    <div class="heading">📘 Staff Dashboard</div>
+
+    <a href="/staff_account">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" class="logo">
+    </a>
+
+</div>
+</div>
+<div class="container">
+
+<div class="card">
+<h3>Create Assignment</h3>
+<form action="{{ url_for('create_assignment_post') }}" method="POST">
+<input type="text" name="title" placeholder="Assignment Title" required>
+<input type="text" name="subject" placeholder="Subject" required>
+<input type="text" name="department" placeholder="Department" required>
+<input type="date" name="due_date" required>
+<button type="submit">Create Assignment</button>
+</form>
+</div>
+
+
+<table>
+<tr>
+<th>Title</th>
+<th>Due Date</th>
+</tr>
+{% for a in assignments %}
+<tr>
+<td>{{ a.title }}</td>
+<td>{{ a.due_date.strftime('%d-%m-%Y') }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<div class="card">
+<h3>Assignment Summary</h3>
+<table>
+<tr><th>Total</th><td id="tSub">0</td></tr>
+<tr><th>Approved</th><td id="tApp">0</td></tr>
+<tr><th>Rejected</th><td id="tRej">0</td></tr>
+<tr><th>Pending</th><td id="tPen">0</td></tr>
+</table>
+</div>
+
+<div class="card" style="grid-column:1/-1;">
+<h2>Student Submissions</h2>
+
+<div style="display:flex;gap:10px;margin-bottom:15px;">
+<button onclick="filterStatus('All')">All</button>
+<button onclick="filterStatus('Approved')">Approved</button>
+<button onclick="filterStatus('Rejected')">Rejected</button>
+<button onclick="filterStatus('Pending')">Pending</button>
+<button onclick="printFiltered()">🖨 Print</button>
+</div>
+
+<table>
+<tr>
+<th>Student</th>
+<th>Reg No</th>
+<th>Assignment</th>
+<th>PDF</th>
+<th>Marks</th>
+<th>Status</th>
+<th>Update</th>
+</tr>
+
+{% for s in submissions %}
+<tr class="subRow" data-status="{{ s.status }}">
+<td>{{ s.student_name }}</td>
+<td>{{ s.reg_no }}</td>
+<td>{{ s.assignment_title }}</td>
+
+<td>
+<a href="{{ url_for('static', filename='uploads/' + s.pdf_file) }}" target="_blank">View</a>
+</td>
+
+<form action="{{ url_for('update_submission', submission_id=s.id) }}" method="POST">
+<td>
+<input type="number" name="marks" value="{{ s.marks or '' }}">
+</td>
+
+<td>
+<b>{{ s.status }}</b><br>
+<button type="submit" name="status" value="Approved" class="action-btn">Approve</button>
+<button type="submit" name="status" value="Rejected" class="reject-btn">Reject</button>
+<button type="submit" name="status" value="Pending" class="pending-btn">Pending</button>
+</td>
+
+<td>
+<button type="submit">Save</button>
+<button type="button"
+class="print-btn"
+onclick="printPDF(`{{ url_for('static', filename='uploads/' + s.pdf_file) }}`)">
+🖨 Print
+</button>
+</td>
+</form>
+</tr>
+{% endfor %}
+</table>
+
+</div>
+</div>
+
+<script>
+
+let currentFilter="All";
+
+function filterStatus(status){
+    currentFilter=status;
+    updateTable();
+}
+
+function updateTable(){
+    let rows=document.querySelectorAll(".subRow");
+    let app=0,rej=0,pen=0,total=0;
+
+    rows.forEach(r=>{
+        let st=r.dataset.status;
+        total++;
+
+        if(st=="Approved") app++;
+        if(st=="Rejected") rej++;
+        if(st=="Pending") pen++;
+
+        if(currentFilter=="All" || st==currentFilter){
+            r.style.display="";
+        }else{
+            r.style.display="none";
+        }
+    });
+
+    document.getElementById("tSub").innerText=total;
+    document.getElementById("tApp").innerText=app;
+    document.getElementById("tRej").innerText=rej;
+    document.getElementById("tPen").innerText=pen;
+}
+
+function printFiltered(){
+    let rows=document.querySelectorAll(".subRow");
+    let data="";
+
+    rows.forEach(r=>{
+        if(r.style.display=="none") return;
+        data+="<tr>"+r.innerHTML+"</tr>";
+    });
+
+    let win=window.open("","","width=900,height=650");
+    win.document.write(`
+    <html>
+    <head>
+    <title>Print</title>
+    <style>
+    table{width:100%;border-collapse:collapse}
+    th,td{border:1px solid #000;padding:8px;text-align:center}
+    </style>
+    </head>
+    <body>
+    <h2>Assignment Report - ${currentFilter}</h2>
+    <table>
+    <tr>
+    <th>Student</th>
+    <th>Reg No</th>
+    <th>Assignment</th>
+    <th>PDF</th>
+    <th>Marks</th>
+    <th>Status</th>
+    </tr>
+    ${data}
+    </table>
+    </body>
+    </html>
+    `);
+    win.document.close();
+    win.print();
+}
+
+function printPDF(url){
+    let w=window.open(url,"_blank");
+    w.onload=()=>w.print();
+}
+
+window.onload=updateTable;
+
+</script>
+
+</body>
+</html>

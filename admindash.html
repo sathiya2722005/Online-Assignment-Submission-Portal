@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard | Assignment Portal</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f4f6f9;
+    background-image:url(../static/img/add.jpg);
+    background-position:center;
+    background-size:cover;
+}
+
+.navbar{
+    background:orchid;
+    color:white;
+    font-weight:bold;
+    font-size:x-large;
+    padding:15px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.back-home{
+    background:#22c55e;
+    color:white;
+    border:none;
+    padding:8px 16px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.container{ padding:25px; }
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.card{
+    background:chartreuse;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+}
+
+.section{
+    background:cyan;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:30px;
+}
+
+.section h3{
+    margin-bottom:15px;
+    color:red;
+    font-weight:bold;
+    font-size:22px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
+}
+
+th{ background:#f1f5f9; }
+
+button{
+    padding:6px 12px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    background:#4f46e5;
+    color:white;
+}
+
+.print-btn{ background:#16a34a; }
+
+.footer{
+    text-align:center;
+    padding:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>📊 Admin Dashboard</h2>
+    <button class="back-home" onclick="goHome()">🏠 Back to Home</button>
+</div>
+
+<div class="container">
+
+<!-- DASH CARDS -->
+<div class="cards">
+    <div class="card">
+        <h3>Total Faculty</h3>
+        <p>{{ faculty|length }}</p>
+    </div>
+    <div class="card">
+        <h3>Total Students</h3>
+        <p>{{ students|length }}</p>
+    </div>
+    <div class="card">
+        <h3>Submitted</h3>
+        <p>{{ submissions|length }}</p>
+    </div>
+</div>
+
+<!-- FACULTY SECTION -->
+<div class="section">
+<h3>👨‍🏫 Faculty Details</h3>
+
+<input type="text" id="facultySearch" placeholder="Search Faculty..." onkeyup="searchFaculty()" style="padding:8px;width:250px;margin-bottom:10px;">
+
+<button onclick="printFaculty()" class="print-btn">Print Faculty</button>
+
+<table id="facultyTable">
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Department</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+{% for f in faculty %}
+<tr>
+<td>{{ f.staff_id }}</td>
+<td>{{ f.staff_name }}</td>
+<td>{{ f.department }}</td>
+<td>{{ f.status }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+<!-- STUDENT SECTION -->
+<div class="section">
+<h3>🎓 Student Details</h3>
+
+<input type="text" id="studentSearch" placeholder="Search Student..." onkeyup="searchStudents()" style="padding:8px;width:250px;margin-bottom:10px;">
+
+<table id="studentTable">
+<thead>
+<tr>
+<th>Roll No</th>
+<th>Name</th>
+<th>Department</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+{% for s in students %}
+<tr>
+<td>{{ s.reg_no }}</td>
+<td>{{ s.full_name }}</td>
+<td>{{ s.department }}</td>
+<td>{{ s.status }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+<!-- SUBMISSION SECTION -->
+<div class="section">
+<h3>📑 Assignment Submissions</h3>
+
+<input type="text" id="submissionSearch" placeholder="Search Submission..." onkeyup="searchSubmissions()" style="padding:8px;width:250px;margin-bottom:10px;">
+
+<button onclick="printSubmissions()" class="print-btn">Print Submissions</button>
+
+<table id="submissionTable">
+<thead>
+<tr>
+<th>ID</th>
+<th>Assignment</th>
+<th>Student</th>
+<th>Reg No</th>
+<th>Department</th>
+<th>Year</th>
+<th>Section</th>
+<th>PDF</th>
+<th>Marks</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+{% for a in submissions %}
+<tr>
+<td>{{ a.id }}</td>
+<td>{{ a.assignment_title }}</td>
+<td>{{ a.student_name }}</td>
+<td>{{ a.reg_no }}</td>
+<td>{{ a.department }}</td>
+<td>{{ a.year }}</td>
+<td>{{ a.section }}</td>
+<td>
+<a href="{{ url_for('static', filename='uploads/' + a.pdf_file) }}" target="_blank">View</a>
+</td>
+<td>{{ a.marks }}</td>
+<td>{{ a.status }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+</div>
+
+<div class="footer">
+© 2026 Assignment Submission Portal | Admin Panel
+</div>
+
+<script>
+
+// FACULTY SEARCH
+function searchFaculty(){
+let input=document.getElementById("facultySearch").value.toLowerCase();
+let rows=document.querySelectorAll("#facultyTable tbody tr");
+rows.forEach(r=>{
+r.style.display=r.innerText.toLowerCase().includes(input)?"":"none";
+});
+}
+
+// STUDENT SEARCH
+function searchStudents(){
+let input=document.getElementById("studentSearch").value.toLowerCase();
+let rows=document.querySelectorAll("#studentTable tbody tr");
+rows.forEach(r=>{
+r.style.display=r.innerText.toLowerCase().includes(input)?"":"none";
+});
+}
+
+// SUBMISSION SEARCH
+function searchSubmissions(){
+let input=document.getElementById("submissionSearch").value.toLowerCase();
+let rows=document.querySelectorAll("#submissionTable tbody tr");
+rows.forEach(r=>{
+r.style.display=r.innerText.toLowerCase().includes(input)?"":"none";
+});
+}
+
+// PRINT FUNCTIONS
+function printFaculty(){
+var table=document.getElementById("facultyTable").outerHTML;
+var win=window.open("","","width=900,height=650");
+win.document.write("<h2>Faculty Details</h2>"+table);
+win.print();
+win.close();
+}
+
+function printSubmissions(){
+var table=document.getElementById("submissionTable").outerHTML;
+var win=window.open("","","width=1000,height=650");
+win.document.write("<h2>Assignment Submissions</h2>"+table);
+win.print();
+win.close();
+}
+
+function goHome(){
+window.location.href="{{ url_for('home') }}";
+}
+
+</script>
+
+</body>
+</html>

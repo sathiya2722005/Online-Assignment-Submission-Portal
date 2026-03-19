@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Online Assignment Submission Portal</title>
+    
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: white;
+            background-image: url(../static/img/home1.jpg);
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color:cyan;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            
+        }
+
+        .navbar h2 {
+            color: black;
+            margin: 0;
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin-left: 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            font-size: large;
+            font-size: 16px;
+        }
+
+        .navbar ul li a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Hero Section */
+        .hero {
+            color:white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .hero button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 16px;
+            background-color: #ffca28;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .hero button:hover {
+            background-color: #ffc107;
+        }
+
+        /* Features */
+        .features {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .features h2 {
+            margin-bottom: 30px;
+            color:white;
+            font-weight: bold;
+        }
+
+        .feature-box {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card {
+            color:white;
+            background-color:palevioletred;
+            width: 280px;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px blue;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .card h3 {
+            color:darkorchid;
+            font-weight: bold;
+        }
+
+        .card p {
+            font-size: 15px;
+            color:green;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            transition: 0.3s;
+        }
+
+        /* Footer */
+        footer {
+            background-color:black;
+            color:blue;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+        }
+        .back-home{
+    background:#22c55e;
+    color:black;
+    border:none;
+    padding:6px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.back-home:hover{
+    background:#16a34a;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h2>Assignment Portal</h2>
+        <ul>
+          <ul>
+    <li><a href="{{ url_for('home') }}">Home</a></li>
+    <li><a href="{{ url_for('register') }}">Register</a></li>
+    <li><a href="{{ url_for('login') }}">Login</a></li>
+   <li><a href="{{ url_for('staff_register') }}">Faculty</a></li>
+<li><a href="{{ url_for('admin_login') }}">Admin</a></li>
+    <li><a href="{{ url_for('about') }}">About</a></li>
+    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+</ul>
+
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Online Assignment Submission Portal</h1>
+        <p>SUBMIT SMARTER LEARN BETTER</p>
+        <a href="{{ url_for('register') }}">
+    <button>REGISTER</button>
+</a>
+
+<a href="{{ url_for('login') }}">
+    <button>LOGIN</button>
+</a>
+
+        
+
+    </div>
+
+    <!-- Features Section -->
+    <div class="features">
+        <h2>Portal Features</h2>
+
+        <div class="feature-box">
+
+            <!-- Student Login -->
+            <a href="{{ url_for('login') }}" class="card">
+                <h3>Student Login</h3>
+                <p>
+                    Students can login securely, upload assignments,
+                    and track submission status.
+                </p>
+            </a>
+
+            <!-- Faculty Review -->
+            <a href="{{ url_for('staff_login') }}" class="card">
+ 
+                <h3>Faculty Review</h3>
+                <p>
+                    Teachers can view submissions, evaluate assignments,
+                    and provide marks and feedback.
+                </p>
+            </a>
+
+            <!-- Admin Control -->
+            <a href="{{ url_for('admin_login') }}" class="card">
+                <h3>Admin Control</h3>
+                <p>
+                    Admin manages users, assignments, and monitors
+                    overall system activities.
+                </p>
+            </a>
+
+        </div>
+    </div>
+
+    <!-- Carousel -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <div id="homeCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="../static/img/img3.jpg" class="d-block w-50 mx-auto p-3">
+            </div>
+            <div class="carousel-item">
+                <img src="../static/img/boot2.jpg" class="d-block w-50 mx-auto p-3">
+            </div>
+            <div class="carousel-item">
+                <img src="../static/img/boo4.jpg" class="d-block w-50 mx-auto p-3">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Footer -->
+    <footer>
+        © 2025 Online Assignment Submission Portal | All Rights Reserved
+    </footer>
+
+</body>
+</html>

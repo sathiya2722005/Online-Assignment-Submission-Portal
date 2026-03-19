@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>About Us | Assignment Submission Portal</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f4f6f9;
+}
+
+/* NAVBAR */
+.navbar{
+    background:#1a237e;
+    padding:15px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.navbar h2{
+    color:white;
+    margin:0;
+}
+.navbar a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    font-size:16px;
+}
+.navbar a:hover{
+    text-decoration:underline;
+}
+
+/* BACK BAR */
+.backbar{
+    background:#303f9f;
+    padding:10px 30px;
+}
+.backbar a{
+    color:white;
+    text-decoration:none;
+    font-size:15px;
+}
+
+/* IMAGE SECTION */
+.image-section{
+    text-align:center;
+    padding:30px 20px;
+}
+.image-section h2{
+    margin-bottom:20px;
+    color:#1a237e;
+}
+.image-section img{
+    width:280px;
+    margin:10px;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* INFO SECTION */
+.info-section{
+    max-width:1100px;
+    margin:20px auto;
+    padding:20px;
+}
+
+/* INFO BOX */
+.info-box{
+    background:linear-gradient(to right,#3f51b5,#1a237e);
+    padding:25px;
+    margin-bottom:25px;
+    border-radius:12px;
+    color:white;
+    box-shadow:0 5px 15px rgba(0,0,0,0.25);
+}
+.info-box h2{
+    margin-top:0;
+    margin-bottom:10px;
+}
+.info-box p, .info-box ul{
+    font-size:16px;
+    line-height:1.8;
+}
+.info-box ul{
+    margin-left:20px;
+}
+
+/* FOOTER */
+footer{
+    background:#1a237e;
+    color:white;
+    text-align:center;
+    padding:15px;
+    margin-top:40px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2>ASSIGNMENT SUBMISSION</h2>
+    <div>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('register') }}">Register</a>
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+    </div>
+</div>
+
+<!-- BACK -->
+<div class="backbar">
+    <a href="{{ url_for('home') }}">← Back to Home</a>
+</div>
+
+<!-- IMAGE SECTION -->
+<div class="image-section">
+    <h2>ABOUT OUR PORTAL</h2>
+    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644">
+    <img src="https://images.unsplash.com/photo-1584697964154-3b8f2b9c0b79">
+    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7">
+</div>
+
+<!-- INFO SECTION -->
+<div class="info-section">
+
+        
+    </div>
+
+    <div class="info-box">
+        <h2>Objectives</h2>
+        <p>
+            This system aims to reduce manual paperwork, save time for students and faculty,
+            and ensure transparency in assignment submission and evaluation processes.
+        </p>
+    </div>
+
+    <div class="info-box">
+        <h2>Student Module</h2>
+        <p>
+            Students can securely register and login, view assignment details, upload
+            assignment files, track submission status, and view marks and feedback
+            provided by faculty.
+        </p>
+    </div>
+
+    <div class="info-box">
+        <h2>Faculty Module</h2>
+        <p>
+            Faculty members can review submitted assignments, download files, evaluate
+            student work, assign marks, and provide feedback efficiently through the system.
+        </p>
+    </div>
+
+    <div class="info-box">
+        <h2>Admin Module</h2>
+        <p>
+            The administrator manages the entire system including student and faculty
+            accounts, assignment creation, monitoring submissions, and generating reports.
+        </p>
+    </div>
+
+    <div class="info-box">
+        <h2>Advantages</h2>
+        <ul>
+            <li>Paperless and eco-friendly platform</li>
+            <li>Secure and centralized assignment storage</li>
+            <li>Easy access anytime, anywhere</li>
+            <li>Reduces manual workload</li>
+            <li>Improves academic efficiency</li>
+        </ul>
+    </div>
+
+    <div class="info-box">
+        <h2>Conclusion</h2>
+        <p>
+            This project provides a smart digital solution for modern educational institutions,
+            making assignment management more organized, transparent, and effective.
+        </p>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+    © 2025 Online Assignment Submission Portal | All Rights Reserved
+</footer>
+
+</body>
+</html>

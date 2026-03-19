@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Register | Assignment Portal</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1a237e, #3f51b5);
+            background-image:url(../static/img/reg.webp);
+            background-position: center;
+            background-size: cover;
+        }
+
+        .navbar {
+            background-color:cyan;
+            padding: 15px 30px;
+        }
+
+        .navbar a {
+            color:black;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .register-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh;
+        }
+
+        .register-box {
+            background-color:white;
+            width: 420px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: blueviolet;
+        }
+
+        .register-box h2 {
+            text-align: center;
+            color:green;
+            margin-bottom: 20px;
+        }
+
+        .register-box label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        .required {
+            color: red;
+            margin-left: 4px;
+        }
+
+        .register-box input,
+        .register-box select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .register-box button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: #1a237e;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .register-box button:hover {
+            background-color: #3949ab;
+        }
+
+        .register-box p {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .register-box a {
+            color: #1a237e;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #555;
+            margin-top: 4px;
+        }
+    </style>
+
+   <script>
+function validateForm(event) {
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (!email.includes("@") || !email.includes(".")) {
+        alert("Please enter valid Email");
+        return false;
+    }
+
+    const strongPassword =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+    if (!strongPassword.test(password)) {
+        alert("Password not strong enough");
+        return false;
+    }
+
+    // ✅ IMPORTANT: allow form submit
+    return true;
+}
+</script>
+
+</head>
+<body>
+
+<div class="navbar">
+    <a href="{{ url_for('home') }}">← Back to Home</a>
+</div>
+
+<div class="register-container">
+    <div class="register-box">
+        <h2>Student Registration</h2>
+
+       <form action="{{ url_for('register') }}" method="POST" onsubmit="return validateForm(event)">
+
+    <label>Full Name<span class="required">*</span></label>
+    <input type="text" name="full_name" required placeholder="Enter Full Name">
+
+    <label>Register Number<span class="required">*</span></label>
+    <input type="text"
+           name="reg_no"
+           placeholder="Enter 10 Digit Register Number"
+           required
+           pattern="[0-9]{10}"
+           maxlength="10"
+           oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+
+    <label>Email ID<span class="required">*</span></label>
+    <input type="email"
+           name="email"
+           id="email"
+           placeholder="example@gmail.com"
+           required>
+
+    <label>Department<span class="required">*</span></label>
+    <select name="department" required>
+        <option value="">Select Department</option>
+        <option>PHYSICS</option>
+        <option>CHEMISTRY</option>
+        <option>BOTANY</option>
+        <option>ZOOLOGY</option>
+        <option>BCA</option>
+        <option>CS</option>
+        <option>TAMIL</option>
+        <option>ENGLISH</option>
+        <option>MATHS</option>
+        <option>HISTORY</option>
+        <option>ECONOMICS</option>
+        <option>GEOLOGY</option>
+    </select>
+
+    <label>Password<span class="required">*</span></label>
+    <input type="password"
+           name="password"
+           id="password"
+           placeholder="Create Strong Password"
+           required>
+
+    <button type="submit">REGISTER</button>
+</form>
+
+
+        <p>Already Registered? <a href="{{ url_for('login') }}">Login Here</a></p>
+    </div>
+</div>
+
+</body>
+</html>
